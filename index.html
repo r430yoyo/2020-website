@@ -12,14 +12,12 @@
   <meta property="og:locale" content="zh_TW" />
   <meta property="og:url" content="https://r430yoyo.github.io/2020-website/" />
 
-  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-
   <link rel="icon" href="images/favicon.ico">
 
   <title>打造一頁式金流商務網頁 - 六角學院</title>
   <link rel="stylesheet" href="stylesheets/all.css">
   <link rel="stylesheet" href="stylesheets/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
   <style>
   @import 'https://fonts.googleapis.com/css?family=Roboto:400,100,900';
   .text-clock {
@@ -454,17 +452,22 @@
 <script src="
 https://cdnjs.cloudflare.com/ajax/libs/skrollr/0.6.30/skrollr.min.js"></script>
 <script>
-  $.fn.extend({
-      animateCss: function (animationName) {
-          var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-          this.addClass('animated ' + animationName).one(animationEnd, function() {
-              $(this).removeClass('animated ' + animationName);
-          });
-      }
-  });
+function animateCSS(element, animationName, callback) {
+    const node = document.querySelector(element)
+    node.classList.add('animated', animationName)
+
+    function handleAnimationEnd() {
+        node.classList.remove('animated', animationName)
+        node.removeEventListener('animationend', handleAnimationEnd)
+
+        if (typeof callback === 'function') callback()
+    }
+
+    node.addEventListener('animationend', handleAnimationEnd)
+}
   $(document).ready(function(){
-    $('#button').mouseenter(function(e){
-      $(this).animateCss('animated pulse');
+    $('#button').click(function(e){
+      $(this).animateCss('animated bounce');
     });
 
   });
